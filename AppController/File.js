@@ -6,7 +6,7 @@ const UploadFile = async (req, res) => {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
     const file = await File.create({
-      name: req.file.originalname,
+      name: req.file.originalname || req.file.filename,
       type: req.file.mimetype,
       size: req.file.size,
       url: req.file.path,
