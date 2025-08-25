@@ -20,7 +20,7 @@ import AuthRouter from './Routes/Auth.js';
 app.use(cookieParser());
 // ✅ CORS
 const corsOptions = {
-    origin: ["https://google-drive-rosy.vercel.app/","http://localhost:3000"],
+    origin: ["https://google-drive-rosy.vercel.app"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
 };
