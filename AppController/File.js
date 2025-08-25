@@ -9,7 +9,7 @@ const UploadFile = async (req, res) => {
       name: req.file.originalname,
       type: req.file.mimetype,
       size: req.file.size,
-      url: `/uploads/${req.file.filename}`,
+      url: req.file.path,
     });
 
     res.status(201).json({ message: "File uploaded", file });
