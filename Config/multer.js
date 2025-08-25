@@ -1,39 +1,21 @@
-// middleware/upload.js
 import multer from "multer";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // store all in uploads/
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_KEY,
+  api_secret: process.env.CLOUD_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "google-drive-clone",
+    resource_type: "auto", // handles images, videos, pdfs, etc.
   },
 });
 
-// Allow images, videos, pdf, zip, music etc.
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    // Images
-    "image/jpeg", "image/png", "image/gif", "image/webp",
-    // Videos
-    "video/mp4", "video/mpeg", "video/quicktime", "video/x-msvideo",
-    // Documents
-    "application/pdf", "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "text/plain",
-    // Archives
-    "application/zip", "application/x-rar-compressed",
-    // Audio
-    "audio/mpeg", "audio/wav", "audio/ogg",
-  ];
+const upload = multer({ storage });
 
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("File type not supported"), false);
-  }
-};
-
-const upload = multer({ storage, fileFilter });
 export default upload;
