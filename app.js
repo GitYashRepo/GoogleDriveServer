@@ -5,6 +5,7 @@ const app = express();
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import expressSession from "express-session";
+import path from "path";
 
 // MongoDB Connection
 import connectToDb from "./Config/db.js";
@@ -41,6 +42,9 @@ app.use(expressSession({
         sameSite: "none",
     },
 }));
+
+// serve uploads folder
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
 connectToDb(); // ✅ wait for MongoDB before loading routes
